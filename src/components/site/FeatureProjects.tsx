@@ -5,6 +5,7 @@ import p3 from "@/assets/project-3.jpg";
 import p4 from "@/assets/project-4.jpg";
 import p5 from "@/assets/project-5.jpg";
 import p6 from "@/assets/project-6.jpg";
+import { Reveal } from "@/components/site/Reveal";
 
 const projects = [
   { name: "Orancel Glow Drop", subtitle: "Skincare · Launch Campaign", img: p1 },
@@ -21,7 +22,7 @@ export function FeatureProjects() {
       <div className="container-brand">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
           <div>
-            <p className="font-mono-brand text-[11px] uppercase tracking-widest text-amber-brand">03 // Selected Work</p>
+            
             <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1]">
               Feature <span className="font-serif-italic font-normal text-amber-brand">Projects</span>
             </h2>
@@ -35,8 +36,8 @@ export function FeatureProjects() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p) => (
-            <article key={p.name} className="group">
+          {projects.map((p, i) => (
+            <Reveal as="article" key={p.name} direction="up" delay={(i % 3) * 120} className="group">
               <div className="aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-ink/40">
                 <img
                   src={p.img}
@@ -52,7 +53,7 @@ export function FeatureProjects() {
                 <ArrowRight className="h-4 w-4 text-amber-brand transition-transform group-hover:translate-x-1" />
               </div>
               <p className="text-sm text-cream/60 mt-1">{p.subtitle}</p>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>

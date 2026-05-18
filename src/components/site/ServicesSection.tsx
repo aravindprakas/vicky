@@ -1,6 +1,7 @@
 import consulting from "@/assets/service-consulting.jpg";
 import design from "@/assets/service-design.jpg";
 import engineering from "@/assets/service-engineering.jpg";
+import { Reveal } from "@/components/site/Reveal";
 
 const cards = [
   { label: "Product Consulting & Automation", img: consulting, featured: false },
@@ -13,17 +14,19 @@ export function ServicesSection() {
     <section id="services" className="bg-amber-brand py-20 md:py-28">
       <div className="container-brand">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="font-mono-brand text-[11px] uppercase tracking-widest text-ink/70">02 // What we do</p>
-          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1] text-ink">
+          
+          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1] text-cream">
             We believe great design <br />
             isn't just <span className="font-serif-italic font-normal">beautiful</span> — it works.
           </h2>
         </div>
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-          {cards.map((c) => (
-            <article
+          {cards.map((c, i) => (
+            <Reveal
               key={c.label}
+              direction="up"
+              delay={i * 130}
               className={`group relative overflow-hidden rounded-[1.75rem] aspect-[3/4] ${
                 c.featured
                   ? "md:scale-[1.06] md:-translate-y-4 md:z-10 bg-rust-deep ring-4 ring-rust-deep/40 shadow-[0_30px_60px_-15px_rgb(0_0_0_/_0.4)]"
@@ -45,7 +48,7 @@ export function ServicesSection() {
                   {c.label}
                 </span>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>

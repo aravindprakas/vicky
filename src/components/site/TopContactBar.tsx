@@ -16,7 +16,17 @@ export function TopContactBar() {
             <span className="sm:hidden">Call</span>
           </a>
         </div>
-        <div className="hidden md:block opacity-60">Mumbai · India</div>
+        <div className="hidden md:block text-cream/90">
+          Built by{" "}
+          <a
+            href="https://www.aravindprakash.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-amber-brand underline decoration-amber-brand/40 underline-offset-4 transition-colors hover:text-cream hover:decoration-cream"
+          >
+            Aravind Prakash
+          </a>
+        </div>
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ import { TrustedByClients } from "@/components/site/TrustedByClients";
 import { FeatureProjects } from "@/components/site/FeatureProjects";
 import { ContactSection } from "@/components/site/ContactSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { CustomCursor } from "@/components/site/CustomCursor";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,12 +39,14 @@ export const Route = createFileRoute("/")({
 function VickyVlogsPage() {
   return (
     <div className="min-h-screen bg-cream">
+      <SmoothScroll />
+      <CustomCursor />
       <VLoader />
       <TopContactBar />
       <StickyNavbar />
-      <MarqueeTicker />
       <main>
         <Hero />
+        <MarqueeTicker />
         <ServicesSection />
         <CreativeServicesRow />
         <WhyChooseUs />

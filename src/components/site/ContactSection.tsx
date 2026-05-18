@@ -21,12 +21,12 @@ export function ContactSection() {
     <section id="contact" className="bg-ink text-cream py-20 md:py-28">
       <div className="container-brand grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div className="lg:col-span-5 space-y-6">
-          <div className="rounded-[1.75rem] bg-amber-brand text-ink p-8">
-            <p className="font-mono-brand text-[11px] uppercase tracking-widest opacity-70">04 // Let's talk</p>
+          <div className="rounded-[1.75rem] bg-amber-brand text-cream p-8">
+            
             <h2 className="mt-3 font-display text-4xl md:text-5xl leading-[1]">
               Have an idea? <span className="font-serif-italic font-normal">Let's make it loud.</span>
             </h2>
-            <p className="mt-4 text-ink/80">
+            <p className="mt-4 text-cream/80">
               Drop a brief, a vibe, or just a meme reference. Every reply comes from a real human in 24 hours flat.
             </p>
           </div>
@@ -71,7 +71,7 @@ export function ContactSection() {
                   key={p}
                   className={`cursor-pointer rounded-full border px-5 py-2.5 text-sm font-medium transition-all ${
                     purpose === p
-                      ? "bg-amber-brand text-ink border-amber-brand"
+                      ? "bg-amber-brand text-cream border-amber-brand"
                       : "border-cream/20 text-cream/80 hover:border-cream/40"
                   }`}
                 >
@@ -99,7 +99,7 @@ export function ContactSection() {
 
           <button
             type="submit"
-            className="group inline-flex items-center gap-2 rounded-full bg-amber-brand px-7 py-3.5 text-sm font-semibold text-ink hover:bg-cream transition-colors"
+            className="group inline-flex items-center gap-2 rounded-full bg-amber-brand px-7 py-3.5 text-sm font-semibold text-cream hover:bg-cream hover:text-rust transition-colors"
           >
             Send Message
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

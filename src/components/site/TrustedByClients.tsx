@@ -1,5 +1,6 @@
 import client1 from "@/assets/client-1.jpg";
 import client2 from "@/assets/client-2.jpg";
+import { Reveal } from "@/components/site/Reveal";
 
 export function TrustedByClients() {
   return (
@@ -7,9 +8,9 @@ export function TrustedByClients() {
       <div className="container-brand space-y-20 md:space-y-24">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-4">
-            <div className="aspect-square overflow-hidden rounded-[1.5rem] bg-cream-warm">
+            <Reveal direction="left" className="aspect-square overflow-hidden rounded-[1.5rem] bg-cream-warm">
               <img src={client1} alt="Priya Menon, founder of Cocoa & Co" width={704} height={704} loading="lazy" className="h-full w-full object-cover" />
-            </div>
+            </Reveal>
           </div>
           <div className="md:col-span-8">
             <p className="font-mono-brand text-[11px] uppercase tracking-widest text-rust">Trusted by Clients</p>
@@ -49,9 +50,9 @@ export function TrustedByClients() {
             </p>
           </div>
           <div className="md:col-span-4 md:order-2 order-1">
-            <div className="aspect-square overflow-hidden rounded-[1.5rem] bg-cream-warm">
+            <Reveal direction="right" className="aspect-square overflow-hidden rounded-[1.5rem] bg-cream-warm">
               <img src={client2} alt="Arjun Rao, Head of Brand at Lumen" width={704} height={704} loading="lazy" className="h-full w-full object-cover" />
-            </div>
+            </Reveal>
           </div>
         </div>
       </div>

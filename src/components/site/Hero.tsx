@@ -1,94 +1,158 @@
-import { ArrowUpRight, Youtube, Instagram, Facebook, Mail } from "lucide-react";
-import heroImage from "@/assets/hero-vicky.jpg";
+import heroImage from "@/assets/hero-vicky.png";
 
-const socials = [
-  { name: "YouTube", handle: "@vickyvlogzs", icon: Youtube, bg: "bg-[#ff0033]", text: "text-white", href: "https://www.youtube.com/@vickyvlogzs" },
-  { name: "Instagram", handle: "@vickyvlogs_", icon: Instagram, bg: "bg-gradient-to-br from-[#feda75] via-[#fa7e1e] via-[#d62976] to-[#962fbf]", text: "text-white", href: "https://www.instagram.com/vickyvlogs_/" },
-  { name: "Facebook", handle: "mass.vicky", icon: Facebook, bg: "bg-[#1877f2]", text: "text-white", href: "https://www.facebook.com/mass.vicky.178061" },
-  { name: "Mail", handle: "vigneshwar.els@gmail.com", icon: Mail, bg: "bg-amber-brand", text: "text-ink", href: "mailto:vigneshwar.els@gmail.com" },
+type Testimonial = {
+  word: string;
+  name: string;
+  role: string;
+  className: string;
+};
+
+const testimonials: Testimonial[] = [
+  {
+    word: "VISIONARY",
+    name: "HEMANT CHARYA",
+    role: "Ex. Product Development & Head, Reliance Big Flix",
+    className: "left-[3%] top-[18%] text-left",
+  },
+  {
+    word: "VERSATILE",
+    name: "ALOK ANAND",
+    role: "APAC Marketing Director, Kramer Electronics Asia Pacific",
+    className: "left-[22%] top-[10%] text-left",
+  },
+  {
+    word: "ADAPTABLE",
+    name: "ROHAN CHANDHOK",
+    role: "Director & Head of Field & Partner Marketing APAC · SUSE",
+    className: "left-[20%] top-[36%] text-left",
+  },
+  {
+    word: "PROACTIVE",
+    name: "ADRIAN ORNIK",
+    role: "Global Growth Leader at EY.",
+    className: "left-[3%] top-[48%] text-left",
+  },
+  {
+    word: "DEDICATED",
+    name: "ROBERT SOVEREIGN-SMITH",
+    role: "Editor-in-Chief, Digit",
+    className: "right-[20%] top-[10%] text-right",
+  },
+  {
+    word: "INSPIRING",
+    name: "VIJAY RAMACHANDRAN",
+    role: "Ex. Editor-in-Chief, IDG",
+    className: "right-[3%] top-[18%] text-right",
+  },
+  {
+    word: "TRAILBLAZER",
+    name: "KABIR MALKANI",
+    role: "Creative Director, CIT, Inc.",
+    className: "right-[20%] top-[36%] text-right",
+  },
+  {
+    word: "MASTERFUL",
+    name: "PHIL CLEVENGER",
+    role: "VP, Product Experience Docusign · Ex Adobe Sr. Director, UX",
+    className: "right-[3%] top-[48%] text-right",
+  },
 ];
+
+function Stars() {
+  return (
+    <div className="flex gap-1 text-cream/60 mb-1.5 text-[10px] tracking-[0.3em]">
+      ★ ★ ★ ★ ★
+    </div>
+  );
+}
 
 export function Hero() {
   return (
-    <section id="top" className="relative bg-cream overflow-hidden">
+    <section
+      id="top"
+      className="relative bg-ink text-cream overflow-hidden min-h-[100svh] flex items-center"
+    >
+      {/* Grain / vignette */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% 50%, transparent 0%, transparent 40%, #000 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+        }}
+      />
+
+      {/* Huge background name */}
       <span
         aria-hidden
-        className="pointer-events-none select-none absolute -top-8 left-1/2 -translate-x-1/2 font-display text-[clamp(8rem,28vw,22rem)] leading-none text-rust/[0.06] whitespace-nowrap"
+        className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[clamp(8rem,22vw,20rem)] leading-none text-cream/[0.04] whitespace-nowrap"
       >
-        Vicky
+        VICKY
       </span>
 
-      <div className="container-brand relative pt-12 pb-20 md:pt-20 md:pb-28">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-7">
-            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-cream/60 px-3 py-1 font-mono-brand text-[11px] uppercase tracking-widest text-ink/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-rust" />
-              India · Comedy · Vlogging · Brand
-            </p>
-            <h1 className="font-display text-[clamp(3rem,8vw,6.5rem)] leading-[0.95] text-ink">
-              Creativity <br />
-              Meets <span className="font-serif-italic text-rust font-normal">Strategy</span>
-            </h1>
-            <div className="mt-8 max-w-xl space-y-4 text-base md:text-lg text-ink/75 leading-relaxed">
-              <p>
-                I'm Vicky — a comedy creator, vlogger, and storyteller from India turning brands into
-                everyday culture moments people actually share.
-              </p>
-              <p>
-                From punchline product drops to long-form lifestyle vlogs, every frame is engineered to
-                hold attention and convert curiosity into community.
-              </p>
-            </div>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a
-                href="#contact"
-                className="group inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 text-sm font-semibold text-ink hover:bg-ink hover:text-cream transition-colors"
-              >
-                Let's collaborate
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-              <a href="#projects" className="text-sm font-medium text-ink/70 hover:text-rust">
-                See latest work →
-              </a>
-            </div>
-          </div>
+      {/* Side nominee badge */}
+      <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col items-center gap-3 bg-ink border-l border-cream/10 px-3 py-6 z-20">
+        <span className="font-display text-xl tracking-tight">V.</span>
+        <span
+          className="font-mono-brand text-[11px] uppercase tracking-[0.4em] text-cream/70"
+          style={{ writingMode: "vertical-rl" }}
+        >
+          Creator
+        </span>
+      </div>
 
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-[0_30px_80px_-20px_rgb(176_48_16_/_0.4)]">
-              <img
-                src={heroImage}
-                alt="Vicky, the creator behind VickyVlogs, holding a camera"
-                width={832}
-                height={1088}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 gradient-overlay" />
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between text-cream">
-                <div>
-                  <div className="font-mono-brand text-[10px] uppercase tracking-widest opacity-70">Now Featuring</div>
-                  <div className="font-display text-xl">Episode 042</div>
-                </div>
-                <div className="rounded-full bg-amber-brand px-3 py-1 text-[11px] font-semibold text-ink">LIVE</div>
-              </div>
-            </div>
-          </div>
+      <div className="container-brand relative w-full pt-4 md:pt-6 pb-16 md:pb-20">
+        {/* Portrait — ring light + subject only, black bg blends with ink */}
+        <div className="relative mx-auto w-[min(620px,85vw)] aspect-[3/4] -mt-8 md:-mt-16">
+          <img
+            src={heroImage}
+            alt="Vicky — comedy creator, vlogger and brand storyteller"
+            className="h-full w-full object-contain"
+            style={{ mixBlendMode: "screen" }}
+          />
         </div>
 
-        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {socials.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              target={s.href.startsWith("http") ? "_blank" : undefined}
-              rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className={`group relative overflow-hidden rounded-2xl ${s.bg} ${s.text} p-5 transition-transform hover:-translate-y-1`}
+        {/* Floating testimonials */}
+        <div className="absolute inset-0 hidden md:block pointer-events-none">
+          {testimonials.map((t) => (
+            <div
+              key={t.name}
+              className={`absolute max-w-[170px] ${t.className} text-cream/55`}
             >
-              <s.icon className="h-7 w-7 mb-8" />
-              <div className="font-display text-lg leading-tight">{s.name}</div>
-              <div className="text-xs opacity-80 mt-0.5">{s.handle}</div>
-              <ArrowUpRight className="absolute top-4 right-4 h-4 w-4 opacity-70 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+              <div className={t.className.includes("text-right") ? "flex flex-col items-end" : "flex flex-col items-start"}>
+                <Stars />
+                <div className="font-display text-lg md:text-xl text-cream/85 tracking-wide leading-none">
+                  {t.word}
+                </div>
+              </div>
+            </div>
           ))}
+        </div>
+
+
+        {/* Bottom tagline */}
+        <div className="relative mt-10 md:mt-0 md:absolute md:left-1/2 md:bottom-12 md:-translate-x-1/2 text-center z-10">
+          <h1 className="font-display text-cream text-[clamp(1.5rem,3.2vw,2.6rem)] leading-tight tracking-tight">
+            I DO COMEDY,<br />
+            THAT DRIVES<br />
+            <span className="text-rust">BRAND GROWTH</span>
+          </h1>
+          <div className="mt-4 flex justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" className="text-rust">
+              <path
+                fill="currentColor"
+                d="M12 2l2.39 4.84L20 8l-4 3.9.94 5.5L12 14.77 7.06 17.4 8 11.9 4 8l5.61-1.16L12 2z"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </section>

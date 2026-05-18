@@ -4,6 +4,7 @@ import web from "@/assets/creative-web.jpg";
 import social from "@/assets/creative-social.jpg";
 import ai from "@/assets/creative-ai.jpg";
 import threed from "@/assets/creative-3d.jpg";
+import { Reveal } from "@/components/site/Reveal";
 
 const items = [
   { label: "Web & UI Design", img: web },
@@ -24,7 +25,7 @@ export function CreativeServicesRow() {
       <div className="container-brand">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end mb-10">
           <div className="lg:col-span-6">
-            <h3 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1] text-ink">
+            <h3 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1] text-cream">
               Over 10+ Flexible <br />
               <span className="font-serif-italic font-normal">Creative</span> Services
             </h3>
@@ -32,14 +33,14 @@ export function CreativeServicesRow() {
           <div className="lg:col-span-6 flex lg:justify-end gap-3">
             <button
               onClick={() => scroll(-1)}
-              className="h-12 w-12 rounded-full border-2 border-ink text-ink hover:bg-ink hover:text-cream transition-colors flex items-center justify-center"
+              className="h-12 w-12 rounded-full border-2 border-cream text-cream hover:bg-cream hover:text-rust transition-colors flex items-center justify-center"
               aria-label="Scroll left"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
             <button
               onClick={() => scroll(1)}
-              className="h-12 w-12 rounded-full border-2 border-ink text-ink hover:bg-ink hover:text-cream transition-colors flex items-center justify-center"
+              className="h-12 w-12 rounded-full border-2 border-cream text-cream hover:bg-cream hover:text-rust transition-colors flex items-center justify-center"
               aria-label="Scroll right"
             >
               <ArrowRight className="h-5 w-5" />
@@ -51,9 +52,11 @@ export function CreativeServicesRow() {
           ref={scroller}
           className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {items.map((i) => (
-            <article
+          {items.map((i, idx) => (
+            <Reveal
               key={i.label}
+              direction="up"
+              delay={idx * 110}
               className="group relative shrink-0 snap-start w-[260px] md:w-[300px] aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-rust-deep"
             >
               <img
@@ -68,7 +71,7 @@ export function CreativeServicesRow() {
               <div className="absolute bottom-4 left-5 right-5 text-cream">
                 <div className="font-serif-italic text-2xl leading-tight">{i.label}</div>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>
