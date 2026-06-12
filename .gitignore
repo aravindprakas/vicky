@@ -21,6 +21,10 @@ dist-ssr
 .dev.vars
 .vercel/
 
+# Local artifacts / backups (not for the remote)
+src.zip
+src/assets/_original/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

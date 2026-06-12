@@ -1,18 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
-import { TopContactBar } from "@/components/site/TopContactBar";
-import { VLoader } from "@/components/site/VLoader";
 import { StickyNavbar } from "@/components/site/StickyNavbar";
-import { MarqueeTicker } from "@/components/site/MarqueeTicker";
 import { Hero } from "@/components/site/Hero";
-import { ServicesSection } from "@/components/site/ServicesSection";
-import { CreativeServicesRow } from "@/components/site/CreativeServicesRow";
-import { WhyChooseUs } from "@/components/site/WhyChooseUs";
-import { TrustedByClients } from "@/components/site/TrustedByClients";
-import { FeatureProjects } from "@/components/site/FeatureProjects";
-import { ContactSection } from "@/components/site/ContactSection";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { TickerScroll } from "@/components/site/TickerScroll";
+import { RevampManifesto } from "@/components/site/RevampManifesto";
+import { RevampFooter } from "@/components/site/RevampFooter";
 import { CustomCursor } from "@/components/site/CustomCursor";
 
 export const Route = createFileRoute("/")({
@@ -38,23 +30,17 @@ export const Route = createFileRoute("/")({
 
 function VickyVlogsPage() {
   return (
-    <div className="min-h-screen bg-cream">
-      <SmoothScroll />
+    <div className="min-h-screen bg-black">
       <CustomCursor />
-      <VLoader />
-      <TopContactBar />
       <StickyNavbar />
       <main>
         <Hero />
-        <MarqueeTicker />
-        <ServicesSection />
-        <CreativeServicesRow />
-        <WhyChooseUs />
-        <TrustedByClients />
-        <FeatureProjects />
-        <ContactSection />
+        <TickerScroll />
+        <div style={{ background: "#121214" }}>
+          <RevampManifesto />
+          <RevampFooter />
+        </div>
       </main>
-      <SiteFooter />
       <Toaster richColors position="top-center" />
     </div>
   );

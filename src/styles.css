@@ -46,15 +46,15 @@
   --color-ink: var(--brand-ink);
   --color-rust-deep: var(--brand-rust-deep);
 
-  --font-display: "Archivo Black", system-ui, sans-serif;
-  --font-serif-italic: "Instrument Serif", Georgia, serif;
+  --font-display: "Anton", system-ui, sans-serif;
+  --font-serif-italic: "Playfair Display", Georgia, serif;
   --font-mono-brand: "JetBrains Mono", ui-monospace, monospace;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.08 0 0);
   --foreground: oklch(0.18 0.02 30);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.02 30);
@@ -128,10 +128,310 @@
   to { transform: translateX(-50%); }
 }
 
+/* ── Mobile capsule tray ── */
+.mobile-tray {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: max-width 1.4s cubic-bezier(0.33,1,0.4,1), opacity 0.8s cubic-bezier(0.33,1,0.4,1);
+}
+.mobile-tray.tray-open {
+  max-width: 600px;
+  opacity: 1;
+  transition: max-width 1.4s cubic-bezier(0.33,1,0.4,1), opacity 1s 0.2s cubic-bezier(0.33,1,0.4,1);
+}
+
+/* base state of each icon button */
+.mobile-tray .mobile-nav-btn {
+  position: relative;
+  height: 42px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  text-decoration: none;
+  transform: translateX(-14px) scale(0.82);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.33,1,0.4,1),
+              opacity 0.7s cubic-bezier(0.33,1,0.4,1),
+              background 0.5s cubic-bezier(0.33,1,0.4,1);
+}
+/* staggered pop-in when tray opens */
+.mobile-tray.tray-open .mobile-nav-btn               { transform: translateX(0) scale(1); opacity: 1; }
+.mobile-tray.tray-open .mobile-nav-btn:nth-child(1)  { transition-delay: 0.15s; }
+.mobile-tray.tray-open .mobile-nav-btn:nth-child(2)  { transition-delay: 0.28s; }
+.mobile-tray.tray-open .mobile-nav-btn:nth-child(3)  { transition-delay: 0.41s; }
+.mobile-tray.tray-open .mobile-nav-btn:nth-child(4)  { transition-delay: 0.54s; }
+.mobile-tray.tray-open .mobile-nav-btn:nth-child(5)  { transition-delay: 0.67s; }
+
+/* icon → fades out on hover, label → fades in */
+.mobile-nav-btn .btn-icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  max-width: 22px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-width 0.75s cubic-bezier(0.33,1,0.4,1),
+              opacity 0.5s cubic-bezier(0.33,1,0.4,1);
+}
+.mobile-nav-btn:hover .btn-icon {
+  max-width: 0;
+  opacity: 0;
+}
+.mobile-nav-btn .btn-label {
+  display: block;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  transform: translateX(-6px);
+  transition: max-width 0.9s cubic-bezier(0.33,1,0.4,1),
+              opacity 0.7s 0.15s cubic-bezier(0.33,1,0.4,1),
+              transform 0.9s cubic-bezier(0.33,1,0.4,1);
+}
+.mobile-nav-btn:hover .btn-label {
+  max-width: 100px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Burger → X morph ── */
+.burger-lines {
+  display: block;
+  width: 22px;
+  height: 14px;
+  position: relative;
+}
+.burger-lines span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.6s cubic-bezier(0.33,1,0.4,1),
+              opacity 0.45s cubic-bezier(0.33,1,0.4,1),
+              top 0.6s cubic-bezier(0.33,1,0.4,1);
+}
+.burger-lines span:nth-child(1) { top: 0; }
+.burger-lines span:nth-child(2) { top: 6px; }
+.burger-lines span:nth-child(3) { top: 12px; }
+.burger-lines.is-open span:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.burger-lines.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.burger-lines.is-open span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+@keyframes ticker-scroll {
+  to { transform: translateX(calc(-100% - 40px)); }
+}
+.ticker-set {
+  animation: ticker-scroll 28s linear infinite;
+}
+.ticker-track:hover .ticker-set {
+  animation-play-state: paused;
+}
+
+/* The Premiere showcase */
+@keyframes premiere-pulse-ring {
+  0% { transform: scale(1); opacity: .8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes premiere-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .animate-marquee {
   animation: marquee 35s linear infinite;
 }
 .animate-marquee:hover { animation-play-state: paused; }
+
+/* ── Vicky revamp (minimal red/white) — marquee + footer ── */
+.revamp {
+  --red: #9a1f1f;
+  --red-deep: color-mix(in oklab, var(--red) 72%, black);
+  --red-soft: color-mix(in oklab, var(--red) 62%, white);
+  --red-ink: color-mix(in oklab, var(--red) 72%, black);
+  --white: #ffffff;
+  --hairline: color-mix(in oklab, var(--red) 16%, transparent);
+  --f-display: "Anton", system-ui, sans-serif;
+  --f-serif: "Playfair Display", Georgia, serif;
+  --max: 1320px;
+  --pad: clamp(1.25rem, 4vw, 2.75rem);
+}
+.revamp .shell { max-width: var(--max); margin-inline: auto; padding-inline: var(--pad); }
+.revamp .serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+.revamp .mono { font-family: var(--f-display); font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 400; }
+
+@supports (animation-timeline: view()) {
+  .revamp [data-rise] { animation: revamp-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+}
+@keyframes revamp-rise { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+
+/* Manifesto — scroll-driven word fill */
+.revamp .wordfill { color: color-mix(in oklab, var(--red) 12%, transparent); }
+@supports (animation-timeline: view()) {
+  .revamp .wordfill {
+    animation: revamp-wordfill linear both;
+    animation-timeline: view(block 75% 25%);
+  }
+}
+@keyframes revamp-wordfill { to { color: var(--red-ink); } }
+
+/* Manifesto section — white fill override */
+#manifesto .wordfill { color: rgba(255,255,255,0.12); }
+@supports (animation-timeline: view()) {
+  #manifesto .wordfill {
+    animation: manifesto-wordfill linear both;
+    animation-timeline: view(block 75% 25%);
+  }
+}
+@keyframes manifesto-wordfill { to { color: #ffffff; } }
+
+/* ── Premiere contact (dark/red) — focus & hover states ── */
+.premiere-field { transition: border-color .2s ease; }
+.premiere-field:focus { border-color: #9a1f1f; }
+.premiere-copy { transition: background .2s ease, color .2s ease; }
+.premiere-copy:hover { background: #9a1f1f; color: #fff; }
+.premiere-social { transition: border-color .2s ease, color .2s ease, transform .15s ease; }
+.premiere-social:hover { border-color: #9a1f1f; color: #f0f0f2; transform: translateY(-2px); }
+.premiere-send { transition: transform .15s ease, box-shadow .2s ease; }
+.premiere-send:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(154,31,31,.4); }
+.premiere-send:active { transform: scale(.98); }
+
+/* ── Bento Gallery ── */
+.bento-section {
+  position: relative;
+  height: 200vh;
+}
+.bento-wrap {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bento-gallery {
+  display: grid;
+  gap: 1vh;
+  grid-template-columns: repeat(3, 32.5vw);
+  grid-template-rows: repeat(4, 23vh);
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+}
+.bento-gallery.bento-final {
+  grid-template-columns: repeat(3, 100vw);
+  grid-template-rows: repeat(4, 49.5vh);
+  gap: 1vh;
+}
+.bento-item {
+  overflow: hidden;
+  position: relative;
+  /* Keep each tile on its own compositor layer so the route-transition reveal
+     blends them cheaply instead of rasterizing 8 large images mid-sweep. */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.bento-item img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bento-gallery .bento-item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
+.bento-gallery .bento-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+.bento-gallery .bento-item:nth-child(3) { grid-area: 2 / 2 / 4 / 3; }
+.bento-gallery .bento-item:nth-child(4) { grid-area: 1 / 3 / 3 / 4; }
+.bento-gallery .bento-item:nth-child(5) { grid-area: 3 / 1 / 4 / 2; }
+.bento-gallery .bento-item:nth-child(6) { grid-area: 3 / 3 / 5 / 4; }
+.bento-gallery .bento-item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
+.bento-gallery .bento-item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
+
+/* ── Hero banner intro — full section pops up as a miniature card, then zooms
+   in to become the banner. Single timeline: pop (0–1s), hold, zoom (1.1–3.9s). ── */
+.hero-intro-mask {
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  animation: hero-intro-zoom 3.9s both;
+}
+@keyframes hero-intro-zoom {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.32);
+    border-radius: 56px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.14), 0 40px 120px rgba(154, 31, 31, 0.35);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.4, 1);
+  }
+  /* card has landed — hold */
+  26% {
+    opacity: 1;
+    transform: translateY(0) scale(0.32);
+    border-radius: 56px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.14), 0 40px 120px rgba(154, 31, 31, 0.35);
+    animation-timing-function: linear;
+  }
+  28% {
+    opacity: 1;
+    transform: scale(0.32);
+    border-radius: 56px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.14), 0 40px 120px rgba(154, 31, 31, 0.35);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.4, 1);
+  }
+  /* slow smooth zoom up to the full banner */
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 0;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0), 0 0 0 rgba(154, 31, 31, 0);
+  }
+}
+/* Elements inside the hero stay hidden on the black card, then fade in
+   one by one while the card expands. Stagger via --hero-d per element. */
+.hero-el {
+  opacity: 0;
+  animation: hero-el-in 0.9s cubic-bezier(0.33, 1, 0.4, 1) both;
+  animation-delay: var(--hero-d, 1.5s);
+}
+@keyframes hero-el-in {
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro-mask { animation: none; }
+  .hero-el { animation: none; opacity: 1; }
+}
+
+/* ── Route transition overlay ── */
+.route-transition {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9990;
+  pointer-events: none;
+  /* Own compositor layer so morphing the paths doesn't repaint the page. */
+  transform: translateZ(0);
+  will-change: contents;
+}
+.route-transition path {
+  pointer-events: none;
+  /* Cheaper per-frame rasterization of the full-screen morphing shape. */
+  shape-rendering: optimizeSpeed;
+}
 
 /* Lenis smooth scroll */
 html.lenis, html.lenis body { height: auto; }
@@ -160,6 +460,10 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { width: 
   background: var(--brand-rust);
   transition: opacity 0.2s ease;
 }
+/* Hide the center dot over interactive targets so it doesn't sit on the text. */
+.cursor-dot.cursor-dot-hover {
+  opacity: 0;
+}
 .cursor-ring {
   width: 34px; height: 34px;
   border: 1.5px solid var(--brand-rust);
@@ -167,7 +471,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { width: 
   transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, border-color 0.25s ease;
   mix-blend-mode: difference;
 }
+/* Over links/buttons: become a clean, unfilled outline with no blend so the
+   element underneath stays fully legible inside the ring. */
 .cursor-ring.cursor-ring-hover {
   width: 56px; height: 56px;
-  background: color-mix(in oklab, var(--brand-rust) 18%, transparent);
+  background: transparent;
+  border-color: var(--brand-cream);
+  mix-blend-mode: normal;
 }

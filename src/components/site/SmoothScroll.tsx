@@ -1,5 +1,9 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 declare global {
   interface Window { __lenis?: Lenis }
@@ -20,15 +24,21 @@ export function SmoothScroll() {
     });
     window.__lenis = lenis;
 
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
+    // Keep GSAP ScrollTrigger in sync with Lenis virtual scroll.
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Drive Lenis off the GSAP ticker (a single shared RAF loop) instead of its
+    // own requestAnimationFrame. GSAP's ticker time is in seconds, so ×1000.
+    // Crucially, GSAP lag-smoothing (on by default) clamps the giant time delta
+    // produced when a backgrounded/idle tab regains focus — so Lenis never gets
+    // fed minutes of elapsed time at once, which was the post-idle scroll jank.
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(tick);
+      lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
       window.__lenis = undefined;
     };
@@ -36,4 +46,3 @@ export function SmoothScroll() {
 
   return null;
 }
-

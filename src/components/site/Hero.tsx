@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import heroImage from "@/assets/hero-vicky.png";
+import { navState } from "@/components/site/RouteTransition";
 
 type Testimonial = {
   word: string;
@@ -67,11 +69,23 @@ function Stars() {
 }
 
 export function Hero() {
+  const [scrollY, setScrollY] = useState(0);
+  // Intro only on a direct landing (fresh document load), not when the user
+  // switches back to the homepage from another route.
+  const [withIntro] = useState(() => !navState.hasNavigated);
+  const el = withIntro ? "hero-el" : "";
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section
-      id="top"
-      className="relative bg-ink text-cream overflow-hidden min-h-[100svh] flex items-center"
-    >
+    <section id="top" className="relative bg-black text-cream overflow-hidden">
+      {/* Intro: the full hero pops up as a miniature card, holds a beat, then
+          smoothly zooms up into the full-size banner (from the Claude Design handoff). */}
+      <div className={`${withIntro ? "hero-intro-mask" : ""} relative min-h-[100svh] w-full flex items-center`}>
       {/* Grain / vignette */}
       <div
         aria-hidden
@@ -90,16 +104,21 @@ export function Hero() {
         }}
       />
 
-      {/* Huge background name */}
-      <span
+      {/* Huge background name — slowest layer
+          IMPORTANT: override only --tw-translate-y so -translate-x-1/2 & -translate-y-1/2 still compose */}
+      {/* <span
         aria-hidden
-        className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[clamp(8rem,22vw,20rem)] leading-none text-cream/[0.04] whitespace-nowrap"
+        className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[clamp(8rem,22vw,20rem)] leading-none text-cream/[0.4] whitespace-nowrap"
+        style={{ "--tw-translate-y": `calc(-50% + ${scrollY * 0.15}px)` } as React.CSSProperties}
       >
         VICKY
-      </span>
+      </span> */}
 
       {/* Side nominee badge */}
-      <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col items-center gap-3 bg-ink border-l border-cream/10 px-3 py-6 z-20">
+      <div
+        className={`${el} hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col items-center gap-3 bg-ink border-l border-cream/10 px-3 py-6 z-20`}
+        style={{ "--hero-d": "3.4s" } as React.CSSProperties}
+      >
         <span className="font-display text-xl tracking-tight">V.</span>
         <span
           className="font-mono-brand text-[11px] uppercase tracking-[0.4em] text-cream/70"
@@ -110,22 +129,37 @@ export function Hero() {
       </div>
 
       <div className="container-brand relative w-full pt-4 md:pt-6 pb-16 md:pb-20">
-        {/* Portrait — ring light + subject only, black bg blends with ink */}
-        <div className="relative mx-auto w-[min(620px,85vw)] aspect-[3/4] -mt-8 md:-mt-16">
+        {/* Portrait — no existing Tailwind transforms, safe to set transform directly */}
+        <div
+          className={`${el} relative mx-auto w-[min(620px,85vw)] aspect-[3/4] -mt-8 md:-mt-16`}
+          style={{ transform: `translateY(${scrollY * 0.25}px)`, "--hero-d": "1.4s" } as React.CSSProperties}
+        >
           <img
             src={heroImage}
             alt="Vicky — comedy creator, vlogger and brand storyteller"
             className="h-full w-full object-contain"
-            style={{ mixBlendMode: "screen" }}
+          />
+          {/* Fade bottom + side edges into black background */}
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: [
+                "linear-gradient(to top,    #000 0%, transparent 28%)",
+                "linear-gradient(to right,  #000 0%, transparent 18%)",
+                "linear-gradient(to left,   #000 0%, transparent 18%)",
+              ].join(", "),
+            }}
           />
         </div>
 
-        {/* Floating testimonials */}
+        {/* Floating testimonials — no existing transforms, safe */}
         <div className="absolute inset-0 hidden md:block pointer-events-none">
-          {testimonials.map((t) => (
+          {testimonials.map((t, i) => (
             <div
               key={t.name}
-              className={`absolute max-w-[170px] ${t.className} text-cream/55`}
+              className={`${el} absolute max-w-[170px] ${t.className} text-cream/55`}
+              style={{ transform: `translateY(${scrollY * 0.4}px)`, "--hero-d": `${2.3 + i * 0.12}s` } as React.CSSProperties}
             >
               <div className={t.className.includes("text-right") ? "flex flex-col items-end" : "flex flex-col items-start"}>
                 <Stars />
@@ -137,9 +171,11 @@ export function Hero() {
           ))}
         </div>
 
-
-        {/* Bottom tagline */}
-        <div className="relative mt-10 md:mt-0 md:absolute md:left-1/2 md:bottom-12 md:-translate-x-1/2 text-center z-10">
+        {/* Bottom tagline — has md:-translate-x-1/2, override only --tw-translate-y */}
+        <div
+          className={`${el} relative mt-10 md:mt-0 md:absolute md:left-1/2 md:bottom-12 md:-translate-x-1/2 text-center z-10`}
+          style={{ "--tw-translate-y": `${scrollY * 0.1}px`, "--hero-d": "1.9s" } as React.CSSProperties}
+        >
           <h1 className="font-display text-cream text-[clamp(1.5rem,3.2vw,2.6rem)] leading-tight tracking-tight">
             I DO COMEDY,<br />
             THAT DRIVES<br />
@@ -154,6 +190,7 @@ export function Hero() {
             </svg>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

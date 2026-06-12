@@ -27,6 +27,7 @@ export function CustomCursor() {
       if (hoverable !== hovering) {
         hovering = hoverable;
         ringRef.current?.classList.toggle("cursor-ring-hover", hovering);
+        dotRef.current?.classList.toggle("cursor-dot-hover", hovering);
       }
     };
 
