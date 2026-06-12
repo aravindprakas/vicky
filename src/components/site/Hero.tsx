@@ -117,7 +117,7 @@ export function Hero() {
       {/* Side nominee badge */}
       <div
         className={`${el} hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col items-center gap-3 bg-ink border-l border-cream/10 px-3 py-6 z-20`}
-        style={{ "--hero-d": "3.4s" } as React.CSSProperties}
+        style={{ "--hero-d": "1.15s" } as React.CSSProperties}
       >
         <span className="font-display text-xl tracking-tight">V.</span>
         <span
@@ -132,7 +132,7 @@ export function Hero() {
         {/* Portrait — no existing Tailwind transforms, safe to set transform directly */}
         <div
           className={`${el} relative mx-auto w-[min(620px,85vw)] aspect-[3/4] -mt-8 md:-mt-16`}
-          style={{ transform: `translateY(${scrollY * 0.25}px)`, "--hero-d": "1.4s" } as React.CSSProperties}
+          style={{ transform: `translateY(${scrollY * 0.25}px)`, "--hero-d": "0.4s" } as React.CSSProperties}
         >
           <img
             src={heroImage}
@@ -159,7 +159,7 @@ export function Hero() {
             <div
               key={t.name}
               className={`${el} absolute max-w-[170px] ${t.className} text-cream/55`}
-              style={{ transform: `translateY(${scrollY * 0.4}px)`, "--hero-d": `${2.3 + i * 0.12}s` } as React.CSSProperties}
+              style={{ transform: `translateY(${scrollY * 0.4}px)`, "--hero-d": `${0.85 + i * 0.05}s` } as React.CSSProperties}
             >
               <div className={t.className.includes("text-right") ? "flex flex-col items-end" : "flex flex-col items-start"}>
                 <Stars />
@@ -174,7 +174,7 @@ export function Hero() {
         {/* Bottom tagline — has md:-translate-x-1/2, override only --tw-translate-y */}
         <div
           className={`${el} relative mt-10 md:mt-0 md:absolute md:left-1/2 md:bottom-12 md:-translate-x-1/2 text-center z-10`}
-          style={{ "--tw-translate-y": `${scrollY * 0.1}px`, "--hero-d": "1.9s" } as React.CSSProperties}
+          style={{ "--tw-translate-y": `${scrollY * 0.1}px`, "--hero-d": "0.65s" } as React.CSSProperties}
         >
           <h1 className="font-display text-cream text-[clamp(1.5rem,3.2vw,2.6rem)] leading-tight tracking-tight">
             I DO COMEDY,<br />
