@@ -1,3 +1,8 @@
+// Select Vercel's Edge runtime here (not via vercel.json `functions.runtime`,
+// which expects a versioned Node runtime and rejects "edge"). The built server
+// entry is a Cloudflare-style Web `fetch` handler, so the edge runtime fits.
+export const config = { runtime: "edge" };
+
 export default async (request: Request) => {
   try {
     // Import the built server entry
