@@ -7,7 +7,16 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 // (req, res) signature to the bundle's Web `fetch(Request) -> Response`.
 export default async function handler(req: IncomingMessage, res: ServerResponse) {
   try {
-    const { default: serverEntry } = await import("../dist/server/index.js");
+    // The built server entry is a JS artifact with no type declarations and
+    // lives outside this file's tsconfig. Cast the specifier to a plain string
+    // so TS treats it as a dynamic import (typed `any`) rather than failing
+    // module resolution (TS2307) when the build output isn't present at check time.
+    const mod = (await import("../dist/server/index.js" as string)) as {
+      default: {
+        fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
+      };
+    };
+    const serverEntry = mod.default;
 
     const proto =
       (req.headers["x-forwarded-proto"] as string | undefined)?.split(",")[0] || "https";
@@ -22,11 +31,13 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     }
 
     const method = (req.method || "GET").toUpperCase();
-    let body: Buffer | undefined;
+    let body: BodyInit | undefined;
     if (method !== "GET" && method !== "HEAD") {
       const chunks: Buffer[] = [];
       for await (const chunk of req) chunks.push(chunk as Buffer);
-      if (chunks.length) body = Buffer.concat(chunks);
+      // A Node Buffer is a Uint8Array at runtime (a valid BodyInit); cast for
+      // TS, whose Buffer<ArrayBufferLike> type doesn't match the DOM BodyInit.
+      if (chunks.length) body = Buffer.concat(chunks) as unknown as BodyInit;
     }
 
     const request = new Request(url.toString(), { method, headers, body });
