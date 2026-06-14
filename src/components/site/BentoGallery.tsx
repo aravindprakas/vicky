@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 import { holdTransition, navState } from "@/components/site/RouteTransition";
+import { isLiteDevice, useLiteMode } from "@/hooks/use-lite-mode";
 
 import img1 from "@/assets/gallery-one.jpg";
 import img2 from "@/assets/gallery-two.jpg";
@@ -21,10 +22,14 @@ const BEBAS = "'Bebas Neue', sans-serif";
 const RED = "#9a1f1f";
 
 export function BentoGallery() {
+  const lite = useLiteMode();
   const sectionRef = useRef<HTMLElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Mobile/tablet renders a plain image grid below — skip the Flip scrub,
+    // the image-decode warm-up and the route-transition hold entirely.
+    if (isLiteDevice()) return;
     const section = sectionRef.current;
     const gallery = galleryRef.current;
     if (!section || !gallery) return;
@@ -104,9 +109,7 @@ export function BentoGallery() {
 
     const imgs = Array.from(gallery.querySelectorAll("img"));
     Promise.all(
-      imgs.map((img) =>
-        img.decode ? img.decode().catch(() => undefined) : Promise.resolve(),
-      ),
+      imgs.map((img) => (img.decode ? img.decode().catch(() => undefined) : Promise.resolve())),
     ).then(ready);
     // Safety net in case decode stalls (e.g. a broken image).
     const readyTimer = window.setTimeout(ready, 2500);
@@ -120,8 +123,56 @@ export function BentoGallery() {
     };
   }, []);
 
+  // Mobile/tablet: a simple, responsive image grid. No scroll-driven scaling.
+  if (lite) {
+    return (
+      <section id="gallery" className="gallery-lite" style={{ background: "#121214" }}>
+        <div className="gallery-lite-head">
+          <div
+            style={{
+              fontFamily: BEBAS,
+              fontSize: "clamp(2.5rem, 14vw, 5rem)",
+              lineHeight: 0.9,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            <span style={{ color: "#f5f4f2" }}>VISUAL</span>
+            <span
+              style={{ display: "block", color: "transparent", WebkitTextStroke: `2px ${RED}` }}
+            >
+              DIARY.
+            </span>
+          </div>
+          <p
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: "clamp(0.65rem, 3vw, 0.8rem)",
+              letterSpacing: "0.2em",
+              color: "rgba(245,244,242,0.35)",
+              textTransform: "uppercase",
+              margin: 0,
+            }}
+          >
+            frames from the road
+          </p>
+        </div>
+
+        <div className="gallery-lite-grid">
+          {IMAGES.map((src, i) => (
+            <img key={i} src={src} alt="" loading="lazy" decoding="async" />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section ref={sectionRef} className="bento-section" style={{ background: "#121214" }}>
+    <section
+      ref={sectionRef}
+      id="gallery"
+      className="bento-section"
+      style={{ background: "#121214" }}
+    >
       <div
         style={{
           position: "absolute",
@@ -133,7 +184,14 @@ export function BentoGallery() {
           pointerEvents: "none",
         }}
       >
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 16,
+          }}
+        >
           <div
             style={{
               fontFamily: BEBAS,

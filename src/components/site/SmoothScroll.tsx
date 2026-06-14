@@ -15,12 +15,14 @@ export function SmoothScroll() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.6,
+      // Longer settle (duration) + lower multipliers = slower, smoother glide.
+      // Note: with duration+easing set, Lenis uses that path and ignores `lerp`.
+      duration: 2.1,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.2,
-      lerp: 0.08,
+      wheelMultiplier: 0.7,
+      touchMultiplier: 1.0,
+      lerp: 0.07,
     });
     window.__lenis = lenis;
 

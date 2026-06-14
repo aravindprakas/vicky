@@ -2,8 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { StickyNavbar } from "@/components/site/StickyNavbar";
 import { Hero } from "@/components/site/Hero";
-import { TickerScroll } from "@/components/site/TickerScroll";
-import { RevampManifesto } from "@/components/site/RevampManifesto";
+import { OpposingMarquee } from "@/components/site/OpposingMarquee";
+import { FocusBlurSection } from "@/components/site/FocusBlurSection";
+import { BentoGallery } from "@/components/site/BentoGallery";
+import { AmbientSubscribe } from "@/components/site/AmbientSubscribe";
 import { RevampFooter } from "@/components/site/RevampFooter";
 import { CustomCursor } from "@/components/site/CustomCursor";
 
@@ -35,9 +37,11 @@ function VickyVlogsPage() {
       <StickyNavbar />
       <main>
         <Hero />
-        <TickerScroll />
-        <div style={{ background: "#121214" }}>
-          <RevampManifesto />
+        <OpposingMarquee />
+        <div style={{ background: "#000" }}>
+          <FocusBlurSection />
+          <BentoGallery />
+          <AmbientSubscribe />
           <RevampFooter />
         </div>
       </main>

@@ -362,6 +362,190 @@
 .bento-gallery .bento-item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
 .bento-gallery .bento-item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
 
+/* Mobile/tablet gallery — static responsive grid that replaces the scroll-driven
+   Flip (no 200vh section, no scaling, no warm-up). */
+.gallery-lite {
+  padding: clamp(3rem, 9vw, 6rem) clamp(1.25rem, 5vw, 2.5rem) clamp(4rem, 11vw, 6rem);
+}
+.gallery-lite-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: clamp(1.5rem, 6vw, 2.5rem);
+}
+.gallery-lite-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.gallery-lite-grid img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+}
+@media (min-width: 640px) {
+  .gallery-lite-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+}
+
+/* ── YouTube subscribe CTA — ported from the design handoff, recolored from
+   YouTube red to the site's wine-red palette (#c0392b → #9a1f1f). ── */
+.subscribe-btn {
+  --sub-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sub-ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #fff;
+  height: 52px;
+  padding: 0 30px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d23f2c, #c0392b 55%, #9a1f1f);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 10px 22px -8px rgba(154, 31, 31, 0.7),
+    0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.5s var(--sub-ease), box-shadow 0.4s var(--sub-ease-soft),
+    background 0.35s var(--sub-ease-soft);
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+/* sheen sweep on hover */
+.subscribe-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.4) 50%, transparent 68%);
+  transform: translateX(-130%);
+  transition: transform 0.7s var(--sub-ease-soft);
+}
+.subscribe-btn:hover::before { transform: translateX(130%); }
+.subscribe-btn:hover {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 14px 28px -8px rgba(154, 31, 31, 0.8),
+    0 3px 10px rgba(0, 0, 0, 0.3);
+}
+.subscribe-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px #c0392b;
+}
+.subscribe-btn .content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.subscribe-btn .ico { width: 18px; height: 18px; display: grid; place-items: center; }
+.subscribe-btn .ico svg {
+  width: 100%; height: 100%;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.subscribe-btn .ico.play svg { fill: currentColor; stroke: none; }
+
+/* subscribed state — neutral cream pill that reads on the dark footer */
+.subscribe-btn.done {
+  background: rgba(245, 244, 242, 0.1);
+  color: #f5f4f2;
+  box-shadow: inset 0 0 0 1px rgba(245, 244, 242, 0.18);
+}
+.subscribe-btn.done:hover {
+  background: rgba(245, 244, 242, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(245, 244, 242, 0.28);
+}
+.subscribe-btn .ico.check { display: none; }
+.subscribe-btn.done .ico.play { display: none; }
+.subscribe-btn.done .ico.check { display: grid; }
+.subscribe-btn.done .ico.check path {
+  stroke-dasharray: 22; stroke-dashoffset: 22;
+  animation: sub-draw 0.42s 0.04s var(--sub-ease-soft) forwards;
+}
+@keyframes sub-draw { to { stroke-dashoffset: 0; } }
+
+/* confetti */
+.subscribe-btn .burst { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.subscribe-btn .burst i { position: absolute; top: 50%; left: 50%; width: 7px; height: 7px; border-radius: 2px; opacity: 0; }
+.subscribe-btn.pop .burst i { animation: sub-confetti 0.7s var(--sub-ease-soft) forwards; }
+@keyframes sub-confetti {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4) rotate(0); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .subscribe-btn,
+  .subscribe-btn::before,
+  .subscribe-btn.done .ico.check path {
+    animation: none !important;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+}
+
+/* ── Ambient-blobs subscribe CTA (design component 29, recolored to brand red) ── */
+.atmos {
+  padding: 0;
+  background: #000;
+}
+.atmos-card {
+  position: relative;
+  width: 100%;
+  height: clamp(420px, 70vh, 620px);
+  border-radius: 0;
+  overflow: hidden;
+  background: #0d0d10;
+  display: grid;
+  place-items: center;
+}
+.atmos-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.55;
+  will-change: transform;
+  pointer-events: none;
+}
+.atmos-blob.b1 { width: 42%; aspect-ratio: 1; background: #c0392b; top: -8%; left: 6%; }
+.atmos-blob.b2 { width: 36%; aspect-ratio: 1; background: #7c1d3f; bottom: -10%; right: 8%; }
+.atmos-blob.b3 { width: 30%; aspect-ratio: 1; background: #d2772c; top: 30%; left: 44%; }
+.atmos-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  padding: 1.5rem;
+  text-align: center;
+}
+.atmos-eyebrow {
+  margin: 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 242, 0.55);
+}
+.atmos-title {
+  margin: 0;
+  font-family: "Anton", system-ui, sans-serif;
+  font-size: clamp(2.25rem, 7vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #f5f4f2;
+}
+
 /* ── Hero banner intro — section pops up as a card, then quickly zooms in to
    become the banner. Kept short (~1.5s) so the page visually completes fast. ── */
 .hero-intro-mask {

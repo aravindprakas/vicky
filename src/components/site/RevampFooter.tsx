@@ -3,13 +3,14 @@
 
 const SOCIALS = [
   { label: "Instagram", href: "https://www.instagram.com/vickyvlogs_/" },
-  { label: "YouTube", href: "https://www.youtube.com/@vickyvlogzs" },
+  { label: "YouTube", href: "https://www.youtube.com/@vickyvlogs.entertainment" },
   { label: "Facebook", href: "https://www.facebook.com/mass.vicky.178061" },
 ];
 
 export function RevampFooter() {
   return (
     <footer
+      id="contact"
       className="revamp"
       style={{
         background: "radial-gradient(700px 420px at 8% 110%, rgba(154,31,31,.28), transparent 60%)",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import heroImage from "@/assets/hero-vicky.png";
 import { navState } from "@/components/site/RouteTransition";
+import { isLiteDevice } from "@/hooks/use-lite-mode";
 
 type Testimonial = {
   word: string;
@@ -76,6 +77,10 @@ export function Hero() {
   const el = withIntro ? "hero-el" : "";
 
   useEffect(() => {
+    // On mobile/tablet skip the scroll-driven parallax entirely: it re-renders
+    // the whole hero (portrait + 8 testimonials) on every scroll frame for a
+    // subtle effect that isn't worth the jank. scrollY stays 0 → identity transforms.
+    if (isLiteDevice()) return;
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -113,20 +118,6 @@ export function Hero() {
       >
         VICKY
       </span> */}
-
-      {/* Side nominee badge */}
-      <div
-        className={`${el} hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col items-center gap-3 bg-ink border-l border-cream/10 px-3 py-6 z-20`}
-        style={{ "--hero-d": "1.15s" } as React.CSSProperties}
-      >
-        <span className="font-display text-xl tracking-tight">V.</span>
-        <span
-          className="font-mono-brand text-[11px] uppercase tracking-[0.4em] text-cream/70"
-          style={{ writingMode: "vertical-rl" }}
-        >
-          Creator
-        </span>
-      </div>
 
       <div className="container-brand relative w-full pt-4 md:pt-6 pb-16 md:pb-20">
         {/* Portrait — no existing Tailwind transforms, safe to set transform directly */}
@@ -173,22 +164,34 @@ export function Hero() {
 
         {/* Bottom tagline — has md:-translate-x-1/2, override only --tw-translate-y */}
         <div
-          className={`${el} relative mt-10 md:mt-0 md:absolute md:left-1/2 md:bottom-12 md:-translate-x-1/2 text-center z-10`}
+          className={`${el} relative mt-6 text-center z-10`}
           style={{ "--tw-translate-y": `${scrollY * 0.1}px`, "--hero-d": "0.65s" } as React.CSSProperties}
         >
-          <h1 className="font-display text-cream text-[clamp(1.5rem,3.2vw,2.6rem)] leading-tight tracking-tight">
-            I DO COMEDY,<br />
-            THAT DRIVES<br />
-            <span className="text-rust">BRAND GROWTH</span>
+          <h1
+            style={{
+              margin: 0,
+              fontFamily: '"Anton", system-ui, sans-serif',
+              fontSize: "clamp(2.5rem, 13vw, 12rem)",
+              lineHeight: 0.82,
+              letterSpacing: "-0.04em",
+              textTransform: "uppercase",
+              color: "#f5f4f2",
+            }}
+          >
+            Vicky
+            <span
+              style={{
+                fontFamily: '"Playfair Display", Georgia, serif',
+                fontStyle: "italic",
+                fontWeight: 400,
+                letterSpacing: "-0.01em",
+                color: "#c0392b",
+                textTransform: "none",
+              }}
+            >
+              vlogs.
+            </span>
           </h1>
-          <div className="mt-4 flex justify-center">
-            <svg width="22" height="22" viewBox="0 0 24 24" className="text-rust">
-              <path
-                fill="currentColor"
-                d="M12 2l2.39 4.84L20 8l-4 3.9.94 5.5L12 14.77 7.06 17.4 8 11.9 4 8l5.61-1.16L12 2z"
-              />
-            </svg>
-          </div>
         </div>
       </div>
       </div>

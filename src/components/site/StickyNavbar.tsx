@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { Images } from "lucide-react";
+import { Home, Clapperboard, Images, Mail } from "lucide-react";
 import { useRouterState } from "@tanstack/react-router";
 import vIcon from "@/assets/v-icon.png";
 import { useTransitionNavigate } from "@/components/site/RouteTransition";
 
 type NavLink = { label: string; Icon: typeof Images; href?: string; to?: string };
 
+// Each item scrolls to a section of the home page (anchors defined on the
+// section components: Hero #top, FocusBlurSection #work, BentoGallery #gallery,
+// RevampFooter #contact).
 const navLinks: NavLink[] = [
-  { label: "Gallery", to: "/gallery", Icon: Images },
+  { label: "Home", href: "#top", Icon: Home },
+  { label: "Work", href: "#work", Icon: Clapperboard },
+  { label: "Gallery", href: "#gallery", Icon: Images },
+  { label: "Contact", href: "#contact", Icon: Mail },
 ];
 
 export function StickyNavbar() {
