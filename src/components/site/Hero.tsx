@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import heroImage from "@/assets/hero-vicky.png";
 import { navState } from "@/components/site/RouteTransition";
 import { isLiteDevice } from "@/hooks/use-lite-mode";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Testimonial = {
   word: string;
@@ -75,6 +79,7 @@ export function Hero() {
   // switches back to the homepage from another route.
   const [withIntro] = useState(() => !navState.hasNavigated);
   const el = withIntro ? "hero-el" : "";
+  const wordmarkRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     // On mobile/tablet skip the scroll-driven parallax entirely: it re-renders
@@ -84,6 +89,30 @@ export function Hero() {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    // Design "Live Components II" #39 — gradient-filled headline. The red↔white
+    // gradient (the wordmark's own two colors) is scrubbed across the letters as
+    // the hero scrolls away. Desktop only; lite devices keep the static fill.
+    if (isLiteDevice()) return;
+    const node = wordmarkRef.current;
+    if (!node) return;
+
+    const tween = gsap.fromTo(
+      node,
+      { backgroundPositionX: "100%" },
+      {
+        backgroundPositionX: "0%",
+        ease: "none",
+        scrollTrigger: { trigger: node, start: "top 88%", end: "bottom 30%", scrub: true },
+      },
+    );
+
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   }, []);
 
   return (
@@ -168,6 +197,7 @@ export function Hero() {
           style={{ "--tw-translate-y": `${scrollY * 0.1}px`, "--hero-d": "0.65s" } as React.CSSProperties}
         >
           <h1
+            ref={wordmarkRef}
             style={{
               margin: 0,
               fontFamily: '"Anton", system-ui, sans-serif',
@@ -175,7 +205,19 @@ export function Hero() {
               lineHeight: 0.82,
               letterSpacing: "-0.04em",
               textTransform: "uppercase",
-              color: "#f5f4f2",
+              // #39 gradient-filled headline — red & black, sized wider than the
+              // text so scroll can scrub the band across. The 200% height +
+              // centred Y keep the gradient covering the serif descenders (the
+              // "g" tail in vlogs.) instead of clipping them transparent.
+              backgroundImage:
+                "linear-gradient(115deg, #c0392b, #000 32%, #c0392b 52%, #000 72%, #c0392b)",
+              backgroundSize: "220% 200%",
+              backgroundPositionY: "center",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              WebkitTextFillColor: "transparent",
+              willChange: "background-position",
             }}
           >
             Vicky
@@ -185,7 +227,8 @@ export function Hero() {
                 fontStyle: "italic",
                 fontWeight: 400,
                 letterSpacing: "-0.01em",
-                color: "#c0392b",
+                color: "transparent",
+                WebkitTextFillColor: "transparent",
                 textTransform: "none",
               }}
             >

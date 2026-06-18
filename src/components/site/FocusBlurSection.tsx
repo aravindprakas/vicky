@@ -91,8 +91,8 @@ export function FocusBlurSection() {
     gsap.ticker.add(tickFn);
 
     // ── blur rack ──
-    gsap.set(fc2.current, { filter: "blur(14px)", opacity: 0.35, scale: 1.12 });
-    gsap.set(fc3.current, { filter: "blur(14px)", opacity: 0.35, scale: 1.12 });
+    gsap.set(fc2.current, { filter: "blur(14px)", opacity: 0, scale: 1.12 });
+    gsap.set(fc3.current, { filter: "blur(14px)", opacity: 0, scale: 1.12 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -104,9 +104,9 @@ export function FocusBlurSection() {
       },
     });
 
-    tl.to(fc1.current, { filter: "blur(14px)", scale: 1.12, opacity: 0.35, duration: 1 }, 0)
+    tl.to(fc1.current, { filter: "blur(14px)", scale: 1.12, opacity: 0, duration: 1 }, 0)
       .to(fc2.current, { filter: "blur(0px)", scale: 1, opacity: 1, duration: 1 }, 0)
-      .to(fc2.current, { filter: "blur(14px)", scale: 1.12, opacity: 0.35, duration: 1 }, 1.2)
+      .to(fc2.current, { filter: "blur(14px)", scale: 1.12, opacity: 0, duration: 1 }, 1.2)
       .to(fc3.current, { filter: "blur(0px)", scale: 1, opacity: 1, duration: 1 }, 1.2);
 
     return () => {
